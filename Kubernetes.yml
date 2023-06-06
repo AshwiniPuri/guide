@@ -1,0 +1,38 @@
+# deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: example-app
+  template:
+    metadata:
+      labels:
+        app: example-app
+    spec:
+      containers:
+        - name: example-container
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-service
+spec:
+  selector:
+    app: example-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+
+To apply these manifest files and create the corresponding Kubernetes resources, you can use the kubectl apply command:
+# kubectl apply -f deployment.yaml
+# kubectl apply -f service.yaml
